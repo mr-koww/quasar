@@ -81,6 +81,7 @@ export default Vue.extend({
 
   render (h) {
     const vertical = this.stepper.vertical
+
     const content = vertical === true && this.stepper.keepAlive === true
       ? h(
         'keep-alive',
@@ -110,7 +111,11 @@ export default Vue.extend({
           }),
 
           this.stepper.animated === true
-            ? h(QSlideTransition, [ content ])
+            ? (
+              this.done === true
+                ? h(QSlideTransition, [ content, h(StepWrapper, { key: this.name }, slot(this, 'done')) ])
+                : h(QSlideTransition, [ content ])
+            )
             : content
         ]
         : [ content ]
